@@ -5,6 +5,7 @@ const app = express();
 const session = require('express-session');
 const SECRET_SESSION = process.env.SECRET_SESSION;
 const passport = require('./config/ppConfig');
+const flash = require('connect-flash')
 
 const { use } = require('chai');
 
@@ -15,6 +16,8 @@ app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
+//flash for temporary messages to the user
+app.use(flash())
 
 //secret: what we actually giving the client to use our site
 //resave: save the sessino even if it's modified, make this false
