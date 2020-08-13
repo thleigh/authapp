@@ -13,31 +13,27 @@ router.get('/login', (req, res) => {
 router.post('/signup', (req, res) => {
   console.log(req.body);
   db.user.findOrCreate({
-    where: {
-      email: req.body.email
-    },
-    default: { 
+    where: { email: req.body.email },
+    defaults: { 
       name: req.body.name,
       password: req.body.password
     }
   })
-  .then(([user, created])=> {
-    if(created) {
-      //if created, success and redirect to home
+  .then(([user, created]) => {
+    if (created) {
+      // if created, success and redirect to home
       console.log(`${user.name} was created`);
       res.redirect('/');
     } else {
-      //Email already exists
-      console.log('Email already exists')
-      res.redirect('/auth/signup')
+      // Email already exist
+      console.log('Email already exist');
+      res.redirect('/auth/signup');
     }
   })
   .catch(error => {
     console.log('Error', error);
     res.redirect('/auth/signup');
-  })
-})
-
-
+  });
+});
 
 module.exports = router;
