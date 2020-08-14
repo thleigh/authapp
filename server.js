@@ -19,6 +19,14 @@ app.use(layouts);
 //flash for temporary messages to the user
 app.use(flash())
 
+//middleware to have our message accessable for ever view
+app.use((req, res, next) => {
+  //before every request, we will attach our current user to res.local
+  res.locals.alerts = req.flash();
+  res.locals.currentUser = req.user;
+  next();
+})
+
 //secret: what we actually giving the client to use our site
 //resave: save the sessino even if it's modified, make this false
 //saveUninitialized: if we have a new session, we'll save it, therefore, 
@@ -35,7 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', {alert: req.flash});
 });
 
 app.get('/profile', (req, res) => {
